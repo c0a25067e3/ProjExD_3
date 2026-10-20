@@ -174,7 +174,10 @@ def main():
             if beam is not None:
                 if beam.rct.colliderect(bomb.rct):
                         bomb = None
-                        beam = None      
+                        beam = None
+                        #消滅させた際にこうかとんが喜ぶ
+                        bird.change_img(6, screen)
+                        pg.display.update()
                 
         if beam is not None:
             beam.update(screen)
