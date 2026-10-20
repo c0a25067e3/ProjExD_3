@@ -162,15 +162,23 @@ class Score:
 
 
 class Explosion:
-    def __init__(self):
+    def __init__(self, bomb: Bomb):
         """
         ドッカーーーーーーーーーン！！！
         """
-        
-        efe_img = pg.image.load("fig/beam.png")
-        efe_img2 = pg.transform.flip(efe_img, True, True)
-        kk_img = pg.image.load("fig/explosion.gif")  
-        
+        efe_img = pg.image.load("fig/explosion.gif")
+        self.img = [efe_img, pg.transform.flip(efe_img, True, True)]
+        self.rct = self.img[0].get_rect()
+        self.rct.center = bomb.rct.center
+        self.life = 30
+        self.life_timer = 3
+
+    def update(self, screen:pg.Surface):
+        self.life -= 1
+        if self.life % 10 == 0:
+            self.life_timer -= 1
+        if self.life >= 0:
+           screen.blit(self.img[self.life_timer%2], self.rct) 
 
 
 def main():
@@ -185,6 +193,7 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     score = Score() #scoreインスタンス生成
+    explosions = []
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -217,6 +226,7 @@ def main():
                             bombs[i] = None
                             beams[n] = None
                             #消滅させた際にこうかとんが喜ぶ
+                            explosions.append(Explosion(bomb))
                             bird.change_img(6, screen)
                             score.num += 1
                             pg.display.update()
@@ -224,11 +234,15 @@ def main():
         bombs = [bomb for bomb in bombs if bomb is not None]
         beams = [beam for beam in beams if beam is not None]
         beams = [beam for beam in beams if screen_rect.contains(beam.rct)]
+        explosions = [explosion for explosion in explosions if explosion.life > 0]
 
         for beam in beams:
             beam.update(screen)
         for bomb in bombs:
             bomb.update(screen)
+        for explosion in explosions:
+            explosion.update(screen)
+        
         score.update(screen) #スコア描画
         pg.display.update()
         tmr += 1
