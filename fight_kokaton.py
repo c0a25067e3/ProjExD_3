@@ -140,6 +140,22 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+class Score:
+    def __init__(self):
+        """
+        スコアの文字設定
+        """
+        self.fonto = pg.font.Font(None, 50)
+        self.num = 0
+        self.img = self.fonto.render(f"Score:{self.num}",0,(0,0,255))
+        self.rct = self.img.get_rect()
+        self.rct.left = 100
+        self.rct.bottom = HEIGHT -50
+
+    def update(self, screen: pg.Surface):
+        self.img = self.fonto.render(f"Score:{self.num}",0,(0,0,255))
+        screen.blit(self.img, self.rct)
+
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
@@ -150,6 +166,7 @@ def main():
     beam = None  # ゲーム初期化時にはビームは存在しない
     clock = pg.time.Clock()
     tmr = 0
+    score = Score()
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -182,6 +199,7 @@ def main():
                             beam = None
                             #消滅させた際にこうかとんが喜ぶ
                             bird.change_img(6, screen)
+                            score.num += 1
                             pg.display.update()
 
         bombs = [bomb for bomb in bombs if bomb is not None]
@@ -189,6 +207,7 @@ def main():
             beam.update(screen)
         for bomb in bombs:
             bomb.update(screen)
+        score.update(screen)
         pg.display.update()
         tmr += 1
         clock.tick(50)
