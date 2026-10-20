@@ -161,10 +161,22 @@ class Score:
         screen.blit(self.img, self.rct)
 
 
+class Explosion:
+    def __init__(self):
+        """
+        ドッカーーーーーーーーーン！！！
+        """
+        
+        efe_img = pg.image.load("fig/beam.png")
+        efe_img2 = pg.transform.flip(efe_img, True, True)
+        kk_img = pg.image.load("fig/explosion.gif")  
+        
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT)) 
-    screen_rect = screen.get_rect()
+    screen_rect = screen.get_rect() #画面の位置取得
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
     bombs = [Bomb((255, 0, 0), 10) for bomb in range(NUM_OF_BOMBS)]
