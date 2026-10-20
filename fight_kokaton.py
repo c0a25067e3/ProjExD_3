@@ -141,10 +141,10 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 class Score:
+    """
+    スコアに関するクラス
+    """
     def __init__(self):
-        """
-        スコアに関するクラス
-        """
         self.fonto = pg.font.Font(None, 50)
         self.num = 0
         self.img = self.fonto.render(f"Score:{self.num}",0,(0,0,255))
